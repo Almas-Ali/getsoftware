@@ -1,0 +1,237 @@
+{% extends 'layout.html' %}
+{% block title %}Category{% endblock title %}
+{% load static %}
+{% load humanize %}
+{% load tags %}
+{% block links %}
+<meta property="og:title" content="{{post.name}}" />
+<meta property="og:url" content="{{config.full_address}}{{post.slug}}" />
+<meta property="og:image" content="{{config.full_address}}{{post.img.url}}" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="{{post.short_dsc|safe}}" />
+<meta property="og:locale" content="en_US" />
+{% endblock links %}
+{% block body %}
+
+<div class="wrapper bgded overlay" style="background-image:url('{% static 'img/bg_img.jpg' %}');">
+    <div id="breadcrumb" class="hoc clear">
+        <h6 class="heading">{{post.name}}</h6>
+        <ul>
+            <li><a href="{% url 'software:all_softwares' %}">Software</a></li>
+            <li><a href="/catagory/{{post.catagory.slug}}">{{post.catagory}}</a></li>
+            <li><a href="{{post.slug}}">{{post.name}}</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="wrapper row3">
+    <main class="hoc container clear">
+        <div class="content">
+
+            <h1>{{post.name}}</h1>
+            <img class="imgr borderedbox inspace-5" src="{{post.img.url}}" alt="Image" title="{{post.name}}"
+                style="pointer-events: none;">
+            <p class="text-success font-h3">
+                This post last updated on {{post.date}}
+            </p>
+            <p>
+                {{post.dsc | safe}}
+            </p>
+
+            <form action="{% url 'software:download' %}" method="POST">
+                {% csrf_token %}
+                <div align="center">
+                    <input type="text" name="slug" value="{{post.slug}}" hidden>
+                    <button class="btn btn-success btn-lg text-light" title="Download"><span
+                            class="fas fa-cloud-download-alt"></span> Download</button> <br>
+                    <p class="text-muted"><strong>{{post.name|total_download}}+ Downloaded</strong></p>
+                </div>
+            </form>
+
+            <div class="row m-2 one_third first">
+                {% if request.user.is_anonymous %}
+                <button id="like" class="btn btn-primary m-2" title="Login to like" disabled><span
+                        class="fas fa-thumbs-up"></span> {{ post.likes.all.count }}
+                    Like
+                </button>
+                <button class="btn btn-primary m-2" title="Login to comment" disabled><span
+                        class="fas fa-comment-slash"></span>
+                    {{post.id|get_count}} Comment
+                </button>
+                {% else %}
+                <form action="/like/id={{request.user.id}}/post_id={{post.id}}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="path" value="{{request.path}}">
+                    {% if request.user not in post.likes.all %}
+                    <button id="like" class="btn btn-primary m-2" type="submit"><span class="fas fa-thumbs-up"></span>
+                        {{post.likes.all.count}} Like
+                    </button>
+                    {% else %}
+                    <button id="like" class="btn btn-danger m-2" type="submit"><span
+                            class="fas fa-thumbs-up"></span>{{post.likes.all.count}}
+                        Unlike
+                    </button>
+                    {% endif %}
+                </form>
+                <a href="javascript:void(0)" onclick="location.href='#commentbox'" type="button"
+                    class="btn btn-primary m-2"><span class="fas fa-comment-dots"></span> {{post.id|get_count}}
+                    Comment</a>
+                {% endif %}
+                <a href="#" class="btn btn-primary m-2" data-toggle="modal" data-target="#copy" title="Share">Share</a>
+            </div>
+
+            <div class="modal fade" id="copy" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+                <div class="modal-dialog ui-front" role="document">
+                    <div class="modal-content card__">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Share</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" id="sharelink" class="form-control"
+                                    value="https://{{config.domain}}{{request.get_full_path}}" readonly>
+                            </div>
+                            <button id="btn" class="btn btn-primary w-100" onclick="copyIt()">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="comments" class="my-5">
+                <h4 class="my-2">
+                    Comments ({{post.id|get_count}})
+                </h4>
+                {% if comments.exists == False %}
+                <p class="my-2">
+                    No comments.
+                </p>
+                {% else %}
+                <ul>
+                    {% for comment in comments %}
+                    {% if comment.parent == None %}
+                    
+                    <li>
+                        <article>
+                            <header>
+                                <figure class="avatar"><img src="{% static 'img/avatar.png' %}" alt="User Image"
+                                        title="User Image" style="pointer-events: none;"></figure>
+                                <address>
+                                    By <a href="javascript:void(0)" class="text-info">{{comment.user.get_full_name}}</a>
+                                </address>
+                                <time datetime="{{comment.date}}">{{comment.date}}</time>
+                            </header>
+                            <div class="comcont">
+                                <p>{{comment.cmt}}</p>
+                            </div>
+                        </article>
+                        {% if request.user.is_anonymous %}
+                        <button class="btn btn-primary" title="Login to add reply" disabled>
+                            Reply
+                        </button>
+                        {% else %}
+                        <button class="btn btn-primary" type="button" data-toggle="collapse"
+                            data-target="#comment{{comment.id}}" aria-expanded="false"
+                            aria-controls="comment{{comment.id}}">
+                            Reply
+                        </button>
+                        {% endif %}
+                        {% with comment.id|comment_filter as replys %}
+                        {% for reply in replys %}
+                        <div class="ml-5 mt-3">
+                            <article>
+                                <header>
+                                    <figure class="avatar"><img src="{% static 'img/avatar.png' %}" alt="User Image"
+                                            title="User Image" style="pointer-events: none;"></figure>
+                                    <address>
+                                        By <a href="javascript:void(0)"
+                                            class="text-info">{{reply.user.get_full_name}}</a>
+                                    </address>
+                                    <time datetime="{{reply.date}}">{{reply.date}}</time>
+                                </header>
+                                <div class="comcont">
+                                    <p>{{reply.cmt}}</p>
+                                </div>
+                            </article>
+                        </div>
+                        {% endfor %}
+                        {% endwith %}
+                    </li>
+
+                    <div class="collapse" id="comment{{comment.id}}">
+                        <div class="card p-2">
+                            <form action="/comment/post_id={{post.id}}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="path" value="{{request.path}}">
+                                <input type="hidden" name="reply" value="{{comment.id}}">
+                                <div class="block clear">
+                                    <label for="comment">Your Comment</label>
+                                    <textarea name="comment" id="comment" cols="25" rows="10"></textarea>
+                                </div>
+                                <div>
+                                    <input type="submit" name="submit" value="Submit Form">
+                                    &nbsp;
+                                    <input type="reset" name="reset" value="Reset Form">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <h2 class="my-3">Write A Comment</h2>
+                {% if request.user.is_anonymous %}
+                <h4 class="text-danger">Please login to add comment.</h4>
+                {% else %}
+                <div class="card my-2 p-2" id="commentbox">
+                    <form action="/comment/post_id={{post.id}}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="path" value="{{request.path}}">
+                        <div class="block clear">
+                            <label for="comment">Your Comment</label>
+                            <textarea name="comment" id="comment" cols="25" rows="10"></textarea>
+                        </div>
+                        <div>
+                            <input type="submit" name="submit" value="Submit Form">
+                            &nbsp;
+                            <input type="reset" name="reset" value="Reset Form">
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+
+            </div>
+            <div class="box">
+                <div class="wrapper row3">
+                    <main class="hoc container clear">
+                        <div class="sectiontitle">
+                            <h2 class="my-2">Related Posts</h2>
+                        </div>
+                        <ul class="nospace group overview">
+                            {% for post in posts %}
+                            <li class="one_third">
+                                <figure><a href="/software/{{post.slug}}"><img src="{{post.img.url}}" alt="image"
+                                            title="{{post.name}}"></a>
+                                    <figcaption title="{{post.name}}">
+                                        <h6 class="heading">{{post.name}}</h6>
+                                        <p>{{post.short_dsc|safe}}</p>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="clear"></div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+
+{% endblock body %}

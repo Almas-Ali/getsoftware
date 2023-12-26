@@ -1,0 +1,24 @@
+
+
+25 - June - 2021 (Slide bar)
+To add a side slide bar which can be access from super header top-right button.
+There will be two sections Blog, Softwares.
+
+Example:
+---------------------
+|Blog:
+|----Posts
+|----Pages
+|----About
+|--------------------
+|Softwares:
+|----Catagorys:
+|--------Search
+|--------Programming
+|--------etc.
+---------------------
+
+
+19 - June - 2021 (Initial text)
+This is a software based website which will server free software to all users.
+I will give my website user what is premium for free.

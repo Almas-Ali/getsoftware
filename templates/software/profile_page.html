@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% block title %}Profile{% endblock title %}
+{% load static %}
+{% block links %}
+<meta property="og:title" content="{{config.website_name}}" />
+<meta property="og:url" content="{{config.full_address}}" />
+<meta property="og:image" content="{{config.full_address}}{{config.image}}" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="{{config.short_description|safe}}" />
+<meta property="og:locale" content="en_US" />
+{% endblock links %}
+{% block body %}
+<style>body{background-image:url('{% static "img/theme_bg.jpg" %}');}</style>
+<div class="container-fluid my-2">
+    <div class="card card2__ p-2">
+        <div class="card-img-top" align="center">
+            <img class="" src="{% static 'img/default.png' %}" alt="Profile Image" title="Profile Image" height="200" width="200"
+                style="pointer-events: none; border-radius: 5%;">
+        </div>
+        <span class="text-center font-h3 text-dark"> {{request.user.get_full_name}} </span>
+
+
+        <form action="/profile" method="POST">
+            {% csrf_token %}
+            <p class="font-h3 pt-3">User Details</p>
+            <div class="form-group">
+                <label for="fname">First Name</label>
+                <input type="text" name="fname" class="form-control" value="{{request.user.first_name}}" readonly
+                    title="First Name">
+            </div>
+            <div class="form-group">
+                <label for="lname">Last Name</label>
+                <input type="text" name="lname" class="form-control" value="{{request.user.last_name}}" readonly
+                    title="Last Name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" name="email" class="form-control" aria-describedby="Enter your valid email address."
+                    value="{{request.user.email}}" readonly title="Email Address">
+                <small id="email" class="form-text text-muted px-2">We'll never share your email with anyone
+                    else.</small>
+            </div>
+            <p class="font-h3 pt-3">Change Password</p>
+            <div class="form-group mt-2">
+                <label for="password">Present Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Present Password"
+                    title="Present Password" required>
+            </div>
+            <div class="form-group mt-2">
+                <label for="newpassword">New Password</label>
+                <input type="password" name="newpassword" class="form-control" title="New Password" placeholder="New Password"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="confirmpassword">Confirm Password</label>
+                <input type="password" name="confirmpassword" class="form-control" title="Confirm Password"
+                    placeholder="Confirm Password" required>
+            </div>
+            <div class="row p-3">
+                <button type="submit" class="btn btn-primary w-50">Submit</button>
+                <button type="reset" class="btn btn-danger w-50">Reset</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock body %}

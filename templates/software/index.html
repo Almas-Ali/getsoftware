@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+{% block links %}
+<meta property="og:title" content="{{config.website_name}}" />
+<meta property="og:url" content="{{config.full_address}}" />
+<meta property="og:image" content="{{config.full_address}}{{config.image}}" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="{{config.short_description|safe}}" />
+<meta property="og:locale" content="en_US" />
+{% endblock links %}
+{% block body %}
+{% comment %} {% include 'navbar.html' %} {% endcomment %}
+
+<div class="wrapper bgded overlay" style="background-image:url('{% static 'img/bg_img.jpg' %}');">
+    <div id="pageintro" class="hoc clear">
+        <article>
+            <h3 class="heading">{{config.website_name}}</h3>
+            <p>{{config.sub_title}}</p>
+            <footer><a class="btn" href="#" data-toggle="modal" data-target="#newsletter">Subscribe Newsletter</a>
+            </footer>
+        </article>
+    </div>
+</div>
+
+
+<div class="wrapper row3">
+    <main class="hoc container clear">
+        <div class="sectiontitle">
+            <h6 class="heading">All latest softwares</h6>
+        </div>
+
+        <ul class="nospace group overview">
+            {% for soft in software %}
+            <li class="one_third">
+                <figure><a href="software/{{soft.slug}}"><img src="{{soft.img.url}}" alt="image"
+                            title="{{soft.name}}"></a>
+                    <figcaption title="{{soft.name}}">
+                        <h6 class="heading">{{soft.name}}</h6>
+                        <p>{{soft.short_dsc|safe}}</p>
+                    </figcaption>
+                </figure>
+            </li>
+            {% endfor %}
+        </ul>
+        <center>
+            <a href="{% url 'software:all_softwares' %}" class="btn btn-primary mt-2" title="More Softwares">More Softwares</a>
+        </center>
+        <div class="clear"></div>
+    </main>
+</div>
+
+
+<div class="wrapper row2">
+    <section class="hoc container clear">
+        <div class="sectiontitle">
+            <h6 class="heading">Current status of our website</h6>
+        </div>
+        <div class="group center">
+            <article class="one_half first"><a class="ringcon btmspace-50 text-dark" href="#"><i>{{total_users}}</i></a>
+                <h6 class="heading">Users</h6>
+            </article>
+            <article class="one_half"><a class="ringcon btmspace-50 text-dark" href="#"><i>{{total_softwares}}</i></a>
+                <h6 class="heading">Softwares</h6>
+            </article>
+            {% comment %} <article class="one_third"><a class="ringcon btmspace-50" href="#"><i>100+</i></a>
+                <h6 class="heading">Blog posts</h6>
+            </article> {% endcomment %}
+        </div>
+    </section>
+</div>
+
+{% include 'footer2.html' %}
+
+{% endblock body %}

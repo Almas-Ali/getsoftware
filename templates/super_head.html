@@ -1,0 +1,36 @@
+<noscript>Your browser don't support javascript.</noscript>
+<div class="wrapper row0">
+    <div id="topbar" class="hoc clear">
+        <div class="fl_left">
+            <ul class="nospace">
+                <li><a href="{% url 'software:index' %}"><i class="fas fa-home fa-lg"></i></a></li>
+                <li><a href="{% url 'software:about' %}">About</a></li>
+                <li><a href="{% url 'software:contact' %}">Contact</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#search">Search</a></li>
+                <li><a href="{% url 'software:catagory' %}">Catagory</a></li>
+                {% if request.user.is_anonymous %}
+                <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#register">Register</a></li>
+                {% else %}
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+                {% endif %}
+                
+            </ul>
+        </div>
+        <div class="fl_right">
+            <ul class="nospace">
+                <li><i class="fas fa-phone rgtspace-5"></i><a href="callto:{{config.number}}">{{config.number}}</a></li>
+                <li><i class="fas fa-envelope rgtspace-5"></i><a href="mailto:{{config.email}}">{{config.email}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- <div class="wrapper row1">
+    <header id="header" class="hoc clear">
+        <div id="logo" class="one_half first">
+            <h1 class="logoname"><a
+                    href="{% url 'software:index' %}"><span>{{config.website_name}}</span>{{config.top_domain}}</a></h1>
+        </div>
+    </header>
+</div> -->

@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% block title %}Download{% endblock title %}
+{% load static %}
+{% block links %}
+<meta property="og:title" content="{{config.website_name}}" />
+<meta property="og:url" content="{{config.full_address}}" />
+<meta property="og:image" content="{{config.full_address}}{{config.image}}" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="{{config.short_description|safe}}" />
+<meta property="og:locale" content="en_US" />
+{% endblock links %}
+{% block body %}
+
+<div class="container-fluid card2__">
+
+    <h4 align="center">
+        Your Requested Resource Will Be Granted From Linux Server..!!
+    </h4>
+
+    <div align="center">
+        <img src="{% static 'img/d_loader.gif' %}" alt="Download">
+    </div>
+
+    <a href="{{post.d_link}}" id="d-l" hidden></a>
+
+    <p>
+        We place your resources on Highly Available Tuned Cloud VPS Server. The Edge of our platform on others is that
+        we are in the process of developing tutorials for every application tool. So For example when you have database
+        software we will also post a short tutorial on how to configure a database server. This setup guide will be
+        simple and understandable by a layman user. You can have Developer and Engineering Software Tools, Programming
+        Software and 3D CAD Applications as well. We also provide tutorials on how to use CAD Software and how to
+        configure Apache, PHP, MySQL, etc. Tips to set up Database Management Systems will be posted by our
+        professionals. You can Learn Performance Tuning tips and debugging techniques as well. <br><br>
+
+        Secondly you can have the Latest Releases of all Engineering and CAD tools. Not only that but we test every
+        software before posting it here. Once we make sure it is working then we add this to our resources. All
+        applications ranging from Antivirus, PC Tuning Utilities, Browsers and Educational Productivity suites.
+        Furthermore you can find tutorials to configure settings and learn tips and tricks to optimize performance.
+        Linux tutorials are also under progress. All of the tutorials are step by step with screenshots.. <br><br>
+
+        With the rise of cyber threats we also make sure that our resources are clean. So we scan every thing before
+        posting it. Because your safety is our top priority. You can verify from our site as well. We removed couple of
+        tools which reported malware. <br><br>
+
+        Please contact us if you find any dead or broken links. Let us know, Your feedback is much appreciated.
+    </p>
+</div>
+
+<script>
+    d = document.getElementById('d-l');
+    setTimeout(function () { d.click(); }, 10000);
+</script>
+
+{% endblock body %}

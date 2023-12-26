@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% block title %}Search{% endblock title %}
+{% load static %}
+{% block links %}
+<meta property="og:title" content="{{config.website_name}}" />
+<meta property="og:url" content="{{config.full_address}}" />
+<meta property="og:image" content="{{config.full_address}}{{config.image}}" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="{{config.short_description|safe}}" />
+<meta property="og:locale" content="en_US" />
+{% endblock links %}
+{% block body %}
+
+<style>
+    body {
+        background-image: url('{% static "img/theme_bg.jpg" %}');
+    }
+</style>
+<div class="box">
+    <div class="card card2__  d-flex">
+        <ul class="list-unstyled">
+            <div class="sectiontitle mb-3">
+                <h2 class="container-fluid">Search Results:</h2>
+            </div>
+            <p class="h4 text-center">Question was : <span>"{{query}}"</span></p>
+            {% if result|length < 1 %} <p class="container-fluid my-2">No search results found ! <br> <br>
+                Your search - <b>{{query}}</b> - did not match any documents. <br>
+                Suggestions:
+                <ul>
+                    <li>Make sure that your query is not less then 3 or greater than 50 Charecter.</li>
+                    <li>Make sure that all words are spelled correctly.</li>
+                    <li>Try more general keywords.</li>
+                    <li>Try different keywords.</li>
+                    <li>Try fewer keywords.</li>
+                </ul>
+                </p>
+                <hr>
+                {% else %}
+                <div class="wrapper card3__ row3">
+                    <main class="hoc container clear">
+                        <ul class="nospace group overview">
+                            {% for post in result %}
+                            <li class="one_third">
+                                <figure><a href="/software/{{post.slug}}"><img src="{{post.img.url}}" alt="image"
+                                            title="{{post.name}}"></a>
+                                    <figcaption>
+                                        <h6 class="heading">{{post.name}}</h6>
+                                        <p>{{post.short_dsc |safe}}</p>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="clear"></div>
+                    </main>
+                </div>
+                {% endif %}
+                <div class="mx-4 text-info">All softwares provided by <span><a class="text-success"
+                            href="/">{{config.domain}}</a></span></div>
+        </ul>
+    </div>
+</div>
+
+{% endblock body %}

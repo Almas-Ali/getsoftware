@@ -1,0 +1,48 @@
+<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="modal"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content card__">
+            <div class="modal-header">
+                <h4 class="modal-title">Register</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'software:register' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="fname">First Name</label>
+                        <input type="text" name="fname" class="form-control" id="fname" placeholder="First Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lname">Last Name</label>
+                        <input type="text" name="lname" class="form-control" id="lname" placeholder="Last Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" name="email" class="form-control" id="email"
+                            aria-describedby="Enter your valid email address." placeholder="Email Address" required>
+                        <small id="email" class="form-text text-muted px-2">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="repassword">Re-Password</label>
+                        <input type="password" name="repassword" class="form-control" id="repassword" placeholder="Re-Password"
+                            required>
+                    </div>
+                    <div class="row px-2">
+                        <button type="submit" class="btn btn-primary w-50">Submit</button>
+                        <button type="reset" class="btn btn-danger w-50">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

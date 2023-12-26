@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% block title %}{{cat.name}}{% endblock title %}
+{% load static %}
+{% block links %}
+<meta property="og:title" content="{{cat.name}}" />
+<meta property="og:url" content="{{config.full_address}}{{cat.slug}}" />
+<meta property="og:image" content="{{config.full_address}}{{config.image}}" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="{{cat.short_dsc|safe}}" />
+<meta property="og:locale" content="en_US" />
+{% endblock links %}
+{% block body %}
+
+
+<style>
+    body {
+        background-image: url('{% static "img/theme_bg.jpg" %}');
+    }
+</style>
+<div class="box">
+    <div class="card card2__  d-flex">
+        <div class="wrapper card3__ row3">
+            <main class="hoc container clear">
+                <div class="sectiontitle">
+                    <h2 class="container-fluid my-2">Catagory: <span>{{cat.name}}</span></h2>
+                </div>
+                <ul class="nospace group overview">
+                    {% for post in posts %}
+                    <li class="one_third">
+                        <figure><a href="/software/{{post.slug}}"><img src="{{post.img.url}}" alt="image"
+                                    title="{{post.name}}"></a>
+                            <figcaption>
+                                <h6 class="heading">{{post.name}}</h6>
+                                <p>{{post.short_dsc |safe}}</p>
+                            </figcaption>
+                        </figure>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="clear"></div>
+            </main>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

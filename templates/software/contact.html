@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% block title %}Contact{% endblock title %}
+{% load static %}
+{% block links %}
+<meta property="og:title" content="{{config.website_name}}" />
+<meta property="og:url" content="{{config.full_address}}" />
+<meta property="og:image" content="{{config.full_address}}{{config.image}}" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="{{config.short_description|safe}}" />
+<meta property="og:locale" content="en_US" />
+{% endblock links %}
+{% block body %}
+
+
+<div class="main_contact d-flex">
+    <div class="card card2__ p-4" style="width: 85%; max-width: 800px;">
+        <form method="post" action="{% url 'software:contact' %}">
+            {% csrf_token %}
+            <center>
+                <h1 class="h1"><span class="fas fa-comments"></span> Contact Us</h1>
+            </center>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group py-1">
+                        <input type="name" name="name" class="form-control" placeholder="Your Full Name" required
+                            title="Enter your full name">
+                    </div>
+                    <div class="form-group py-1">
+                        <input type="email" name="email" class="form-control" placeholder="Your Email" required
+                            title="Enter your email address">
+                    </div>
+                    <div class="form-group py-1">
+                        <input type="number" name="phone" class="form-control" placeholder="Your Phone Number" required
+                            title="Enter your phone number with country code">
+                        <small class="text-muted ml-2">With Country Code</small>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="msg" class="form-control" placeholder="Your Message" cols="2" rows="5"
+                            required title="Enter your message with full details"></textarea>
+                    </div>
+                    <div align="center" class="form-group">
+                        <div class="one_half first">
+                            <button class="btn btn-primary w-75" type="submit">Submit</button>
+                        </div>
+                        <div class="one_half">
+                            <button class="btn btn-danger w-75" type="reset">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock body %}

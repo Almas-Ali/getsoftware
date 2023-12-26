@@ -1,0 +1,7 @@
+django
+Pillow
+whitenoise
+#mysqlclient
+django-ckeditor
+python-decouple
+django-email-verification
